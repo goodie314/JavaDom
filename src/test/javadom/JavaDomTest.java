@@ -1,5 +1,7 @@
 package test.javadom;
 
+import javadom.HtmlDocument;
+import javadom.HtmlElement;
 import javadom.JavaDom;
 
 import java.io.IOException;
@@ -10,7 +12,7 @@ public class JavaDomTest {
         String url = "http://google.com";
 
         JavaDom javaDom = new JavaDom();
-        javaDom.getPage(url);
-        System.out.println(javaDom.getHtml());
+        HtmlDocument page = javaDom.getPage(url);
+        HtmlElement root = page.getRoot();
     }
 }
