@@ -164,4 +164,8 @@ public class HtmlElement {
     public void setInnerHtml(String innerHtml) {
         this.innerHtml = innerHtml;
     }
+
+    public String getProperty(String key) {
+        return this.tag.getProperty(key);
+    }
 }

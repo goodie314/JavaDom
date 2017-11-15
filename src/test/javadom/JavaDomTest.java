@@ -1,10 +1,11 @@
 package test.javadom;
 
-import javadom.HtmlDocument;
+import javadom.Document;
 import javadom.HtmlElement;
 import javadom.JavaDom;
 
 import java.io.IOException;
+import java.util.List;
 
 public class JavaDomTest {
 
@@ -12,7 +13,10 @@ public class JavaDomTest {
         String url = "http://google.com";
 
         JavaDom javaDom = new JavaDom();
-        HtmlDocument page = javaDom.getPage(url);
+        Document page = javaDom.getPage(url);
         HtmlElement root = page.getRoot();
+
+        List<HtmlElement> elems = page.getElementsByClass("gbzt gbz0l gbp1");
+        elems.forEach((e) -> System.out.println(e.getTag()));
     }
 }

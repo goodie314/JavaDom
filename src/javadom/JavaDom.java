@@ -23,7 +23,7 @@ public class JavaDom {
         this.html = html;
     }
 
-    public HtmlDocument getPage(String url) throws IOException {
+    public Document getPage(String url) throws IOException {
         String getRequest = "GET %s %s/1.0 \r\n\r\n";
 
         Socket sock;
@@ -48,7 +48,7 @@ public class JavaDom {
         response = responseBuilder.toString();
         this.html = this.stripResponseHeaders(response);
 
-        return HtmlDocument.parseDocument(this.html);
+        return Document.parseDocument(this.html);
     }
 
     private void parseUrl(String url) {
