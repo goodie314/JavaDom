@@ -10,6 +10,7 @@ public class JavaDom {
 
     private String html;
     private String protocol;
+    private int port;
     private String url;
     private String baseUrl;
     private String relativeUrl;
@@ -24,7 +25,6 @@ public class JavaDom {
 
     public HtmlDocument getPage(String url) throws IOException {
         String getRequest = "GET %s %s/1.0 \r\n\r\n";
-        int httpPort = 80;
 
         Socket sock;
         BufferedReader reader;
@@ -34,7 +34,7 @@ public class JavaDom {
         String response;
 
         this.parseUrl(url);
-        sock = new Socket(this.baseUrl, httpPort);
+        sock = new Socket(this.baseUrl, this.port);
         reader = new BufferedReader(new InputStreamReader(sock.getInputStream()));
         writer = new DataOutputStream(sock.getOutputStream());
         getRequest = String.format(getRequest, this.relativeUrl, this.protocol);
@@ -73,6 +73,14 @@ public class JavaDom {
             this.relativeUrl = "/";
         }
 
+        index = url.indexOf(":");
+        if (index != -1) {
+            this.port = Integer.parseInt(url.substring(index + 1));
+            url = url.substring(0, index);
+        }
+        else {
+            this.port = 80;
+        }
         this.baseUrl = url;
     }
 
