@@ -23,10 +23,12 @@ public class HtmlElement {
     private List<HtmlElement> children = new ArrayList<>();
     private HtmlTag tag;
     private String innerHtml;
+    private int tagIndex;
 
-    private HtmlElement(HtmlElement parent, HtmlTag tag) {
+    private HtmlElement(HtmlElement parent, HtmlTag tag, int tagIndex) {
         this.parent = parent;
         this.tag = tag;
+        this.tagIndex = tagIndex;
     }
 
     public static HtmlElement parseHtml(String html) {
@@ -41,13 +43,13 @@ public class HtmlElement {
             return null;
         }
 
-        root = new HtmlElement(null, tags.get(0));
-        closingIndex = getClosingTag(0, tags);
+        root = new HtmlElement(null, tags.get(0), 0);
+        closingIndex = getClosingTag(0);
         if (closingIndex < 0) {
             return null;
         }
 
-        parseChildren(root, tags.subList(1, closingIndex));
+        parseChildren(root, 0);
         return root;
     }
 
@@ -74,7 +76,7 @@ public class HtmlElement {
                 .collect(Collectors.toList());
     }
 
-    private static int getClosingTag(int tagIndex, List<HtmlTag> tags) {
+    private static int getClosingTag(int tagIndex) {
         int openCount;
         HtmlTag openTag;
         HtmlTag closeTag;
@@ -109,53 +111,27 @@ public class HtmlElement {
         return currentIndex;
     }
 
-    private static void parseChildren(HtmlElement parent, List<HtmlTag> remaining) {
-        List<HtmlElement> children = new ArrayList<>();
+    private static void parseChildren(HtmlElement parent, int tagIndex) {
+        int endIndex;
+        int temp;
+        int subEndIndex = tagIndex;
+        HtmlElement elem;
 
-        HtmlElement child;
-        String innerHtml;
-        HtmlTag openTag;
-        HtmlTag closeTag;
-        int childEndIndex;
+        endIndex = getClosingTag(tagIndex);
+        while (subEndIndex < (endIndex - 1)) {
+            subEndIndex++;
+            elem = new HtmlElement(parent, tags.get(subEndIndex), subEndIndex);
+            parent.children.add(elem);
 
-        if (remaining.size() == 0) {
-            return;
+            temp = getClosingTag(subEndIndex);
+            if (temp > 0) {
+                subEndIndex = temp;
+            }
         }
 
-        openTag = remaining.get(0);
-        childEndIndex = getClosingTag(0, remaining);
-
-        child = new HtmlElement(parent, openTag);
-        children.add(child);
-
-        if (childEndIndex == -1 || childEndIndex == 0) {
-            children.add(child);
-            parent.setChildren(children);
+        for (HtmlElement child : parent.children) {
+            parseChildren(child, child.tagIndex);
         }
-
-        if (childEndIndex == 1) {
-            closeTag = tags.get(1);
-//            innerHtml = html.substring(openTag.getPageLocation(), closeTag.getPageLocation());
-//            child.setInnerHtml(innerHtml);
-            children.add(child);
-            parent.setChildren(children);
-        }
-
-        if (childEndIndex > 0) {
-            parseChildren(child, remaining.subList(1, remaining.size()));
-        }
-        if (childEndIndex < 0) {
-            childEndIndex = 1;
-        }
-        parseChildren(parent, remaining.subList(childEndIndex, remaining.size()));
-        parent.setChildren(children);
-//        while (remaining.size() > 0) {
-//            child.setChildren(parseChildren(child, remaining.subList(0, childEndIndex)));
-//
-//            remaining = remaining.subList(childEndIndex, remaining.size() - 1);
-//            child = new HtmlElement(parent, remaining.get(0));
-//        }
-
     }
 
     public HtmlElement getParent() {
