@@ -3,7 +3,6 @@ package javadom;
 import javadom.enums.TagType;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -12,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class HtmlElement {
 
-    private static final Pattern openTagPattern = Pattern.compile("<\\s*([a-zA-Z]+).*?(/)?\\s*>");
+    private static final Pattern openTagPattern = Pattern.compile("<\\s*([a-zA-Z]+)(.*?)(/)?\\s*>");
     private static final Pattern closeTagPattern = Pattern.compile("<\\s*/\\s*([a-zA-Z]+)\\s*>");
 
     private static List<HtmlTag> tags = new ArrayList<>();
@@ -58,17 +57,17 @@ public class HtmlElement {
 
         matcher = openTagPattern.matcher(html);
         while (matcher.find()) {
-            if (matcher.group(2) == null) {
-                tags.add(new HtmlTag(matcher.group(0), TagType.OPEN, matcher.group(1), matcher.end()));
+            if (matcher.group(3) == null) {
+                tags.add(new HtmlTag(matcher.group(0), TagType.OPEN, matcher.group(1), matcher.group(2), matcher.end()));
             }
             else {
-                tags.add(new HtmlTag(matcher.group(0), TagType.OPEN_CLOSE, matcher.group(1), matcher.start()));
+                tags.add(new HtmlTag(matcher.group(0), TagType.OPEN_CLOSE, matcher.group(1), matcher.group(2), matcher.start()));
             }
         }
 
         matcher = closeTagPattern.matcher(html);
         while(matcher.find()) {
-            tags.add(new HtmlTag(matcher.group(0), TagType.CLOSE, matcher.group(1), matcher.start()));
+            tags.add(new HtmlTag(matcher.group(0), TagType.CLOSE, matcher.group(1), null, matcher.start()));
         }
 
         tags = tags.stream()

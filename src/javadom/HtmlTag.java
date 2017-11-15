@@ -13,10 +13,11 @@ public class HtmlTag {
     private String tagProperties;
     private int pageLocation;
 
-    protected HtmlTag(String tag, TagType tagType, String tagName, int pageLocation) {
+    protected HtmlTag(String tag, TagType tagType, String tagName, String tagProperties, int pageLocation) {
         this.tag = tag;
         this.tagType = tagType;
         this.tagName = tagName;
+        this.tagProperties = tagProperties;
         this.pageLocation = pageLocation;
     }
 
