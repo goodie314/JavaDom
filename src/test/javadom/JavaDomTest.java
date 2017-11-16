@@ -16,7 +16,7 @@ public class JavaDomTest {
         Document page = javaDom.getPage(url);
         HtmlElement root = page.getRoot();
 
-        List<HtmlElement> elems = page.getElementsByClass("gbzt gbz0l gbp1");
+        List<HtmlElement> elems = page.find(".gbmt");
         elems.forEach((e) -> System.out.println(e.getTag()));
     }
 }

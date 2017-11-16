@@ -20,14 +20,20 @@ public class HtmlTag {
         this.tag = tag;
         this.tagType = tagType;
         this.tagName = tagName;
-        this.tagProperties = tagProperties;
+        this.tagProperties = tagProperties + " ";
         this.pageLocation = pageLocation;
     }
 
     public String getProperty(String key) {
-        Pattern pattern = Pattern.compile(key + "\\s*=\\s*\"(.*)\"");
+        Pattern pattern = Pattern.compile(key + "\\s*=\\s*[\"'](.*?)[\"']|" + key + "\\s*=\\s*(.*?)\\s");
         Matcher matcher = pattern.matcher(this.tagProperties);
-        return matcher.find() ? matcher.group(1) : null;
+        String group = null;
+        if (matcher.find()) {
+            group = matcher.group(1);
+            group = group == null ? matcher.group(2) : group;
+        }
+
+        return group;
     }
 
     public String getTag() {
@@ -71,7 +77,7 @@ public class HtmlTag {
     }
 
     public String toString() {
-        return this.tagName + "," + this.tagType + "," + this.pageLocation;
+        return this.tag + "," + this.tagType + "," + this.pageLocation;
     }
 
     public boolean equals(HtmlTag tag) {
