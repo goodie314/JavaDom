@@ -10,13 +10,13 @@ import java.util.List;
 public class JavaDomTest {
 
     public static void main(String[] args) throws IOException {
-        String url = "http://google.com";
+        String url = "google.com";
 
         JavaDom javaDom = new JavaDom();
         Document page = javaDom.getPage(url);
         HtmlElement root = page.getRoot();
 
-        List<HtmlElement> elems = page.find(".gbmt");
+        List<HtmlElement> elems = page.find("a");
         elems.forEach((e) -> System.out.println(e.getTag()));
     }
 }

@@ -90,7 +90,7 @@ public class Document {
         boolean foundPattern = false;
         boolean subSearch = false;
         Pattern queryPattern = Pattern.compile("([a-zA-Z*]*)\\.?([a-zA-Z*]*)#?([a-zA-Z*]*):?([a-zA-Z*]*)");
-        Pattern attributePattern = Pattern.compile("\\[([a-zA-Z]*?)=(\\w*?)\\]");
+        Pattern attributePattern = Pattern.compile("\\[([a-zA-Z]*?)=(.*?)\\]|\\[([a-zA-Z]*?)\\]");
 
         Matcher matcher = queryPattern.matcher(selector);
 
