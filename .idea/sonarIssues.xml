@@ -13,7 +13,32 @@
             <set />
           </value>
         </entry>
+        <entry key="$USER_HOME$/git_workspace/checkmaster/checks/CM107-ppc-landing-pages-check.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/git_workspace/checkmaster/checks/CM108-ppc-thank-you-pages-check.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$USER_HOME$/git_workspace/checkmaster/core/db/migrations/10-ppc-conversion-code/ppc-conversion-code-metadata.json">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/git_workspace/checkmaster/web/static/js/checks/CM107-ppc-landing-pages-check.jsx">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/git_workspace/checkmaster/web/static/js/checks/CM108-ppc-thank-you-pages-check.jsx">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/git_workspace/checkmaster/web/static/js/checks/CM120-ppc-conversion-code-check.jsx">
           <value>
             <set />
           </value>
@@ -59,6 +84,31 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/test/javadom/JavaDomTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../json/src/JSON.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../json/src/JSONArray.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../json/src/JSONObject.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../json/src/TagLocation.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../json/src/Tuple.java">
           <value>
             <set />
           </value>

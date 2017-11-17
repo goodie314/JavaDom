@@ -56,36 +56,6 @@ public class SearchUtils {
         return tagsFound;
     }
 
-//    public static List<HtmlElement> classSearch(String className, boolean subSearch, List<HtmlElement> found, HtmlElement root) {
-//        List<HtmlElement> classesFound = new ArrayList<>();
-//
-//        SearchFunc func = (e, search, list) -> {
-//            if (search.equals("*")) {
-//                list.add(e);
-//            }
-//            else if (e.getTag().getProperty("class").equals(search)) {
-//                list.add(e);
-//            }
-//        };
-//
-//        if (subSearch) {
-//            for (HtmlElement elem : found) {
-//                String classProp = elem.getTag().getProperty("class");
-//                if (className.equals("*")) {
-//                    classesFound.add(elem);
-//                }
-//                else if (classProp != null && classProp.contains(className)) {
-//                    classesFound.add(elem);
-//                }
-//            }
-//        }
-//        else {
-//            SearchUtils.traverseDom(root, className, classesFound, func);
-//        }
-//
-//        return classesFound;
-//    }
-
     public static List<HtmlElement> classNameSubSearch(String className, List<HtmlElement> found) {
         List<HtmlElement> classesFound = new ArrayList<>();
 
