@@ -23,6 +23,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$USER_HOME$/git_workspace/checkmaster/checks/CM120-ppc-conversion-code-check.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/git_workspace/checkmaster/core/db/migrations/10-ppc-conversion-code/index.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$USER_HOME$/git_workspace/checkmaster/core/db/migrations/10-ppc-conversion-code/ppc-conversion-code-metadata.json">
           <value>
             <set />
@@ -83,6 +93,26 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/javadom/http/HttpResponse.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/javadom/http/HttpService.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/javadom/page/Document.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/javadom/page/Node.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/test/javadom/JavaDomTest.java">
           <value>
             <set />
@@ -109,6 +139,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../json/src/Tuple.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../webcrawler/src/main/java/crawler/Crawler.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../webcrawler/src/main/java/crawler/Test.java">
           <value>
             <set />
           </value>

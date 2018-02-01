@@ -1,22 +1,17 @@
 package test.javadom;
 
-import javadom.Document;
-import javadom.HtmlElement;
-import javadom.JavaDom;
 
-import java.io.IOException;
-import java.util.List;
+import javadom.JavaDom;
+import javadom.http.HttpService;
+import javadom.page.Document;
 
 public class JavaDomTest {
 
-    public static void main(String[] args) throws IOException {
-        String url = "google.com";
-
-        JavaDom javaDom = new JavaDom();
-        Document page = javaDom.getPage(url);
-        HtmlElement root = page.getRoot();
-
-        List<HtmlElement> elems = page.find("a");
-        elems.forEach((e) -> System.out.println(e.getTag()));
+    public static void main(String[] args) throws Exception {
+        String url = "http://www.google.com";
+        System.out.println(HttpService.get(url).getResponseBody());
+        JavaDom dom = new JavaDom();
+        Document doc = dom.getPage(url);
+        System.out.println(doc.getElementsByClassName("gbh"));
     }
 }

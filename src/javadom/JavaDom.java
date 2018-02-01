@@ -1,5 +1,9 @@
 package javadom;
 
+import javadom.http.HttpResponse;
+import javadom.http.HttpService;
+import javadom.page.Document;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -23,32 +27,33 @@ public class JavaDom {
         this.html = html;
     }
 
-    public Document getPage(String url) throws IOException {
-        String getRequest = "GET %s %s/1.0 \r\n\r\n";
-
-        Socket sock;
-        BufferedReader reader;
-        DataOutputStream writer;
-        String line;
-        StringBuilder responseBuilder;
-        String response;
-
-        this.parseUrl(url);
-        sock = new Socket(this.baseUrl, this.port);
-        reader = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-        writer = new DataOutputStream(sock.getOutputStream());
-        getRequest = String.format(getRequest, this.relativeUrl, this.protocol);
-        writer.write(getRequest.getBytes());
-        writer.flush();
-        responseBuilder = new StringBuilder();
-        while ((line = reader.readLine()) != null) {
-            responseBuilder.append(line);
-            responseBuilder.append("\n");
-        }
-        response = responseBuilder.toString();
-        this.html = this.stripResponseHeaders(response);
-
-        return Document.parseDocument(this.html);
+    public Document getPage(String url) throws Exception {
+//        String getRequest = "GET %s %s/1.1 \r\nHost: %s\r\n\r\nCache-Control: no-cache\r\n";
+//
+//        Socket sock;
+//        BufferedReader reader;
+//        DataOutputStream writer;
+//        String line;
+//        StringBuilder responseBuilder;
+//        String response;
+//
+//        this.parseUrl(url);
+//        sock = new Socket(this.baseUrl, this.port);
+//        reader = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+//        writer = new DataOutputStream(sock.getOutputStream());
+//        getRequest = String.format(getRequest, this.relativeUrl, this.protocol, this.baseUrl);
+//        writer.write(getRequest.getBytes());
+//        writer.flush();
+//        responseBuilder = new StringBuilder();
+//        while ((line = reader.readLine()) != null) {
+//            responseBuilder.append(line);
+//            responseBuilder.append("\n");
+//        }
+//        response = responseBuilder.toString();
+//        this.html = this.stripResponseHeaders(response);
+        HttpResponse response = HttpService.get(url);
+        this.html = response.getResponseBody();
+        return Document.parseHtml(this.html);
     }
 
     private void parseUrl(String url) {
@@ -82,16 +87,6 @@ public class JavaDom {
             this.port = 80;
         }
         this.baseUrl = url;
-    }
-
-    private String stripResponseHeaders(String response) {
-        int index;
-        String html;
-
-        index = response.indexOf("\n\n");
-        html = response.substring(index);
-        html = html.trim();
-        return html;
     }
 
     public String getHtml() {
