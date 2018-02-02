@@ -9,9 +9,9 @@ public class JavaDomTest {
 
     public static void main(String[] args) throws Exception {
         String url = "http://www.google.com";
-        System.out.println(HttpService.get(url).getResponseBody());
+        System.out.println(HttpService.get(url));
         JavaDom dom = new JavaDom();
         Document doc = dom.getPage(url);
-        System.out.println(doc.getElementsByClassName("gbh"));
+        System.out.println(doc.querySelector("form"));
     }
 }

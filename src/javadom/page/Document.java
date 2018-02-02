@@ -1,11 +1,9 @@
 package javadom.page;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -16,6 +14,9 @@ public class Document {
     private Node root;
     private List<Node> explodedDom;
 
+    private static final Pattern querySelectorPattern = Pattern.compile("([a-zA-Z]+)*(?:#(\\w+))?(?:\\.(\\w+))?",
+            Pattern.CASE_INSENSITIVE);
+
     private Document(Node root) {
         this.root = root;
         this.explodedDom = this.explodeDOM(root);
@@ -23,6 +24,33 @@ public class Document {
 
     public Node getRoot() {
         return this.root;
+    }
+
+    public List<Node> querySelector(String query) {
+        Matcher matcher;
+        List<Node> searchList;
+        List<Node> resultList;
+
+        matcher = querySelectorPattern.matcher(query);
+        searchList = this.explodedDom;
+        resultList = new ArrayList<>();
+
+        while(matcher.find()) {
+            if (matcher.group(1) != null) {
+                resultList = SearchUtil.getElementsByTagName(matcher.group(1), searchList);
+                searchList = resultList;
+            }
+            if (matcher.group(2) != null) {
+                resultList = SearchUtil.getElementById(matcher.group(2), searchList);
+                searchList = resultList;
+            }
+            if (matcher.group(3) != null) {
+                resultList = SearchUtil.getElementsByClassName(matcher.group(3), searchList);
+                searchList = resultList;
+            }
+        }
+
+        return resultList;
     }
 
     public List<Node> getElementsByClassName(String className) {
@@ -36,7 +64,7 @@ public class Document {
                         return val.equals(className);
                     }
                 })
-                .collect(Collectors.toCollection(ArrayList::new));
+                .collect(Collectors.toList());
     }
 
     private List<Node> explodeDOM(Node root) {
