@@ -94,6 +94,9 @@ public class Node {
         StringBuilder builder = new StringBuilder();
 
         builder.append("Node: ").append(this.name).append("\n");
+        if (this.parent != null) {
+            builder.append("Parent: ").append(this.parent.getName()).append("\n");
+        }
         for (String key : this.attributes.keySet()) {
             builder.append(key).append(": ").append(this.attributes.get(key)).append("\n");
         }

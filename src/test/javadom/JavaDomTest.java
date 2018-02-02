@@ -12,6 +12,6 @@ public class JavaDomTest {
         System.out.println(HttpService.get(url));
         JavaDom dom = new JavaDom();
         Document doc = dom.getPage(url);
-        System.out.println(doc.querySelector("a.gb1[href='https://drive.google.com/?tab=wo']"));
+//        System.out.println(doc.querySelector("script"));
     }
 }

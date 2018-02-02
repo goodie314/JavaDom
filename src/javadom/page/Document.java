@@ -22,6 +22,8 @@ public class Document {
     private Document(Node root) {
         this.root = root;
         this.explodedDom = this.explodeDOM(root);
+        System.out.println("DOM size: " + this.explodedDom.size());
+        this.explodedDom.forEach(System.out::println);
     }
 
     public Node getRoot() {
@@ -101,7 +103,8 @@ public class Document {
         return dom;
     }
 
-    private static final Pattern tagsPattern = Pattern.compile("<(\\/)?(.*?)(\\/)?>", Pattern.CASE_INSENSITIVE & Pattern.DOTALL);
+    private static final Pattern tagsPattern = Pattern.compile("<(\\/)?(.*?)(\\/)?>");
+    private static final Pattern scriptTagsPattern = Pattern.compile("<script.*?>(.*?)<\\/script.*?>", Pattern.CASE_INSENSITIVE);
     private static final Pattern htmlVersionPattern = Pattern.compile("<\\s*!.*?>");
 
     public static Document parseHtml(String html) throws Exception {
@@ -109,19 +112,44 @@ public class Document {
         Node rootNode;
         Node currentNode;
         Node tempNode;
+        boolean insideScriptTag;
+        String innerText;
+        StringBuilder builder;
 
         rootNode = null;
         currentNode = null;
+        insideScriptTag = false;
 
+        // remove <!DOCTYPE> node from html
         matcher = htmlVersionPattern.matcher(html);
         if (matcher.find()) {
             html = html.substring(matcher.end());
+        }
+
+        // pad script tags with new lines so that text inside scripts is not mistaken for html
+        matcher = scriptTagsPattern.matcher(html);
+        while (matcher.find()) {
+            if (matcher.group(1) != null) {
+                innerText = "\n" + html.substring(matcher.start(1), matcher.end(1)) + "\n";
+                builder = new StringBuilder(html.substring(0, matcher.start(1)));
+                builder.append(innerText);
+                builder.append(html.substring(matcher.end(1)));
+                html = builder.toString();
+                matcher = scriptTagsPattern.matcher(html);
+            }
         }
 
         matcher = tagsPattern.matcher(html);
         while(matcher.find()) {
             // end tag
             if (matcher.group(1) != null) {
+                tempNode = new Node(matcher.group(2));
+                if (tempNode.getName().equalsIgnoreCase("script")) {
+                    insideScriptTag = false;
+                }
+                if (insideScriptTag) {
+                    continue;
+                }
                 if (currentNode == null) {
                     throw new Exception("End tag before start tag");
                 }
@@ -129,6 +157,9 @@ public class Document {
             }
             // self closing tag
             else if (matcher.group(3) != null) {
+                if (insideScriptTag) {
+                    continue;
+                }
                 tempNode = new Node(matcher.group(2));
                 if (currentNode != null) {
                     currentNode.addChild(tempNode);
@@ -137,9 +168,16 @@ public class Document {
             // open tag
             else {
                 tempNode = new Node(matcher.group(2));
+                if (insideScriptTag) {
+                    continue;
+                }
+                if (tempNode.getName().equalsIgnoreCase("script")) {
+                    insideScriptTag = true;
+                }
                 if (tempNode.isSelfClosing()) {
                     if (currentNode != null) {
                         currentNode.addChild(tempNode);
+                        tempNode.setParent(currentNode);
                         continue;
                     }
                     else {
