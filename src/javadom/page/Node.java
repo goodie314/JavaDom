@@ -102,4 +102,36 @@ public class Node {
         }
         return builder.toString();
     }
+
+    public String toJSON() {
+        boolean start = true;
+        StringBuilder builder = new StringBuilder("{");
+
+        builder.append("\"name\":\"").append(this.name).append("\",");
+        builder.append("\"attributes\":[");
+        for (String key : this.attributes.keySet()) {
+            if (start) {
+                builder.append("{\"").append(key).append("\":\"").append(this.attributes.get(key)).append("\"}");
+                start = false;
+            }
+            else {
+                builder.append(",{\"").append(key).append("\":\"").append(this.attributes.get(key)).append("\"}");
+            }
+        }
+        builder.append("],");
+        builder.append("\"children\":[");
+        start = true;
+        for (Node node : this.children) {
+            if (start) {
+                builder.append(node.toJSON());
+                start = false;
+            }
+            else {
+                builder.append(",").append(node.toJSON());
+            }
+        }
+        builder.append("]}");
+
+        return builder.toString();
+    }
 }

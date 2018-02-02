@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * Created by u6062536 on 2/1/2018.
@@ -16,14 +15,13 @@ public class Document {
 
     private static final Pattern querySelectorPattern = Pattern.compile("([a-zA-Z]+)*(?:#(\\w+))?(?:\\.(\\w+))?",
             Pattern.CASE_INSENSITIVE);
-    private static final Pattern attributeSelectorPattern = Pattern.compile("\\[([^=]+)=?(?:[\"'](.*?)[\"'])?\\]",
+    private static final Pattern attributeSelectorPattern = Pattern.compile("\\[([^=]+?)=?(?:[\"'](.*?)[\"'])?\\]",
             Pattern.CASE_INSENSITIVE);
 
     private Document(Node root) {
         this.root = root;
         this.explodedDom = this.explodeDOM(root);
-        System.out.println("DOM size: " + this.explodedDom.size());
-        this.explodedDom.forEach(System.out::println);
+        System.out.println("Nodes: " + this.explodedDom.size());
     }
 
     public Node getRoot() {
@@ -79,17 +77,7 @@ public class Document {
     }
 
     public List<Node> getElementsByClassName(String className) {
-        return this.explodedDom.stream()
-                .filter(node -> {
-                    String val = node.getAttribute("class");
-                    if (val == null) {
-                        return false;
-                    }
-                    else {
-                        return val.equals(className);
-                    }
-                })
-                .collect(Collectors.toList());
+        return SearchUtil.getElementsByClassName(className, this.explodedDom);
     }
 
     private List<Node> explodeDOM(Node root) {
@@ -103,9 +91,8 @@ public class Document {
         return dom;
     }
 
-    private static final Pattern tagsPattern = Pattern.compile("<(\\/)?(.*?)(\\/)?>");
-    private static final Pattern scriptTagsPattern = Pattern.compile("<script.*?>(.*?)<\\/script.*?>", Pattern.CASE_INSENSITIVE);
-    private static final Pattern htmlVersionPattern = Pattern.compile("<\\s*!.*?>");
+    private static final Pattern tagsPattern = Pattern.compile("<(\\/)?([^<>]*?)(\\/)?>");
+    private static final Pattern htmlVersionPattern = Pattern.compile("^\\s*?<\\s*![^<>]*>");
 
     public static Document parseHtml(String html) throws Exception {
         Matcher matcher;
@@ -113,8 +100,6 @@ public class Document {
         Node currentNode;
         Node tempNode;
         boolean insideScriptTag;
-        String innerText;
-        StringBuilder builder;
 
         rootNode = null;
         currentNode = null;
@@ -124,19 +109,6 @@ public class Document {
         matcher = htmlVersionPattern.matcher(html);
         if (matcher.find()) {
             html = html.substring(matcher.end());
-        }
-
-        // pad script tags with new lines so that text inside scripts is not mistaken for html
-        matcher = scriptTagsPattern.matcher(html);
-        while (matcher.find()) {
-            if (matcher.group(1) != null) {
-                innerText = "\n" + html.substring(matcher.start(1), matcher.end(1)) + "\n";
-                builder = new StringBuilder(html.substring(0, matcher.start(1)));
-                builder.append(innerText);
-                builder.append(html.substring(matcher.end(1)));
-                html = builder.toString();
-                matcher = scriptTagsPattern.matcher(html);
-            }
         }
 
         matcher = tagsPattern.matcher(html);
