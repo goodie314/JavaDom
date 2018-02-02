@@ -144,6 +144,9 @@ public class Document {
                 if (insideScriptTag) {
                     continue;
                 }
+                if (tempNode.getName() == null) {
+                    continue;
+                }
                 if (tempNode.getName().equalsIgnoreCase("script")) {
                     insideScriptTag = true;
                 }
