@@ -4,6 +4,7 @@ package test.javadom;
 import javadom.JavaDom;
 import javadom.http.HttpService;
 import javadom.page.Document;
+import javadom.page.Node;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +17,10 @@ public class JavaDomTest {
         String url = "http://www.google.com";
         System.out.println(HttpService.get(url));
 //        JavaDom dom = new JavaDom();
-        testSpeed(1000);
-//        Document doc = JavaDom.getPage(url);
-//        System.out.println(doc.getRoot().toJSON());
+//        testSpeed(1000);
+        Document doc = JavaDom.getPage(url);
+        List<Node> res = doc.querySelector("p");
+        res.forEach(r -> System.out.println(r.getInnerText()));
     }
 
     public static void testSpeed(int iterations) throws Exception {

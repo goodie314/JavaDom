@@ -24,8 +24,11 @@ public class Node {
     private Node parent;
     private List<Node> children;
 
+    private Integer startInner;
+
     private String name;
     private Map<String, String> attributes;
+    private String innerText;
 
     public Node(String nodeBody) {
         this.children = new ArrayList<>();
@@ -87,6 +90,18 @@ public class Node {
                 this.attributes.put(key, value);
             }
         }
+    }
+
+    protected void setStartInner(Integer startInner) {
+        this.startInner = startInner;
+    }
+
+    protected void setInnerText(Integer endInner, String html) {
+        this.innerText = html.substring(this.startInner, endInner);
+    }
+
+    public String getInnerText() {
+        return this.innerText;
     }
 
     @Override

@@ -125,6 +125,7 @@ public class Document {
                 if (currentNode == null) {
                     throw new Exception("End tag before start tag");
                 }
+                currentNode.setInnerText(matcher.start(), html);
                 currentNode = currentNode.getParent();
             }
             // self closing tag
@@ -159,9 +160,11 @@ public class Document {
                 if (currentNode != null) {
                     tempNode.setParent(currentNode);
                     currentNode.addChild(tempNode);
+                    tempNode.setStartInner(matcher.end());
                     currentNode = tempNode;
                 }
                 else {
+                    tempNode.setStartInner(matcher.end());
                     rootNode = tempNode;
                     currentNode = tempNode;
                 }
