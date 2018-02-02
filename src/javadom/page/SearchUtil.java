@@ -28,4 +28,18 @@ public class SearchUtil {
                 })
                 .collect(Collectors.toList());
     }
+
+    public static List<Node> getElementsByAttribute(String attributeName, String attributeValue, List<Node> searchList) {
+        return searchList.stream()
+                .filter(node -> {
+                    String nodeAttribute = node.getAttribute(attributeName);
+                    if (attributeValue != null) {
+                        return nodeAttribute != null && nodeAttribute.equals(attributeValue);
+                    }
+                    else {
+                        return nodeAttribute != null;
+                    }
+                })
+                .collect(Collectors.toList());
+    }
 }

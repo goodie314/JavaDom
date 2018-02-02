@@ -16,6 +16,8 @@ public class Document {
 
     private static final Pattern querySelectorPattern = Pattern.compile("([a-zA-Z]+)*(?:#(\\w+))?(?:\\.(\\w+))?",
             Pattern.CASE_INSENSITIVE);
+    private static final Pattern attributeSelectorPattern = Pattern.compile("\\[([^=]+)=?(?:[\"'](.*?)[\"'])?\\]",
+            Pattern.CASE_INSENSITIVE);
 
     private Document(Node root) {
         this.root = root;
@@ -30,10 +32,23 @@ public class Document {
         Matcher matcher;
         List<Node> searchList;
         List<Node> resultList;
+        String attributeName;
+        String attributeValue;
+        String attributeQuery;
+
+        matcher = attributeSelectorPattern.matcher(query);
+        if (matcher.find()) {
+            attributeQuery = query.substring(matcher.start());
+            query = query.substring(0, matcher.start());
+        }
+        else {
+            attributeQuery = "";
+        }
 
         matcher = querySelectorPattern.matcher(query);
         searchList = this.explodedDom;
         resultList = new ArrayList<>();
+
 
         while(matcher.find()) {
             if (matcher.group(1) != null) {
@@ -48,6 +63,14 @@ public class Document {
                 resultList = SearchUtil.getElementsByClassName(matcher.group(3), searchList);
                 searchList = resultList;
             }
+        }
+
+        matcher = attributeSelectorPattern.matcher(attributeQuery);
+        while (matcher.find()) {
+            attributeName = matcher.group(1);
+            attributeValue = matcher.group(2);
+            resultList = SearchUtil.getElementsByAttribute(attributeName, attributeValue, searchList);
+            searchList = resultList;
         }
 
         return resultList;
