@@ -10,18 +10,28 @@ import java.util.regex.Pattern;
  */
 public class Document {
 
+    private String url;
+    private String contentType;
+
     private Node root;
     private List<Node> explodedDom;
 
-    private static final Pattern querySelectorPattern = Pattern.compile("([a-zA-Z]+)*(?:#(\\w+))?(?:\\.(\\w+))?",
+    private static final Pattern querySelectorPattern = Pattern.compile("(\\w+)*(?:#(\\w+))?(?:\\.(\\w+))?",
             Pattern.CASE_INSENSITIVE);
     private static final Pattern attributeSelectorPattern = Pattern.compile("\\[([^=]+?)=?(?:[\"'](.*?)[\"'])?\\]",
             Pattern.CASE_INSENSITIVE);
 
-    private Document(Node root) {
+    private Document(String url, String contentType, Node root) {
+        this.url = url;
+        this.contentType = contentType;
         this.root = root;
         this.explodedDom = this.explodeDOM(root);
-        System.out.println("Nodes: " + this.explodedDom.size());
+    }
+
+    public String getUrl() { return this.url; }
+
+    public String getContentType() {
+        return this.contentType;
     }
 
     public Node getRoot() {
@@ -94,7 +104,7 @@ public class Document {
     private static final Pattern tagsPattern = Pattern.compile("<(\\/)?([^<>]*?)(\\/)?>");
     private static final Pattern htmlVersionPattern = Pattern.compile("^\\s*?<\\s*![^<>]*>");
 
-    public static Document parseHtml(String html) throws Exception {
+    public static Document parseHtml(String url, String contentType, String html) throws Exception {
         Matcher matcher;
         Node rootNode;
         Node currentNode;
@@ -115,7 +125,7 @@ public class Document {
         while(matcher.find()) {
             // end tag
             if (matcher.group(1) != null) {
-                tempNode = new Node(matcher.group(2));
+                tempNode = new Node(url, matcher.group(2));
                 if (tempNode.getName().equalsIgnoreCase("script")) {
                     insideScriptTag = false;
                 }
@@ -133,14 +143,14 @@ public class Document {
                 if (insideScriptTag) {
                     continue;
                 }
-                tempNode = new Node(matcher.group(2));
+                tempNode = new Node(url, matcher.group(2));
                 if (currentNode != null) {
                     currentNode.addChild(tempNode);
                 }
             }
             // open tag
             else {
-                tempNode = new Node(matcher.group(2));
+                tempNode = new Node(url, matcher.group(2));
                 if (insideScriptTag) {
                     continue;
                 }
@@ -174,6 +184,6 @@ public class Document {
             }
         }
 
-        return new Document(rootNode);
+        return new Document(url, contentType, rootNode);
     }
 }

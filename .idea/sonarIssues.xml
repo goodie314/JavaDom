@@ -68,6 +68,21 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/out/artifacts/JavaDom_jar/JavaDom.jar!/javadom/JavaDom.class">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/out/artifacts/JavaDom_jar/JavaDom.jar!/javadom/http/HttpService.class">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/out/artifacts/JavaDom_jar/JavaDom.jar!/javadom/page/Document.class">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/javadom/Document.java">
           <value>
             <set />
@@ -164,6 +179,56 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../webcrawler/src/main/java/crawler/Test.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../webcrawler/src/main/java/me/goodmanson/controller/TestRunController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../webcrawler/src/main/java/me/goodmanson/crawler/Crawler.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../webcrawler/src/main/java/me/goodmanson/crawler/JavaDomCrawler.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../webcrawler/src/main/java/me/goodmanson/runner/TestRunner.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../webcrawler/src/main/java/me/goodmanson/runner/TestScanner.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../webcrawler/src/main/java/me/goodmanson/test/BaseTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../webcrawler/src/main/java/me/goodmanson/test/BrokenLinkCheck.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../webcrawler/src/main/java/me/goodmanson/test/H1TagCheck.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../webcrawler/src/main/java/me/goodmanson/test/Test.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../webcrawler/src/main/java/me/goodmanson/test/TestCallback.java">
           <value>
             <set />
           </value>

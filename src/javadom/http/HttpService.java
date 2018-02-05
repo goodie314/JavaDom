@@ -15,6 +15,7 @@ public class HttpService {
         HttpURLConnection connection = null;
         Integer statusCode;
         String statusMessage;
+        String contentType;
         BufferedReader reader;
         String line;
         StringBuilder response = new StringBuilder();
@@ -28,6 +29,10 @@ public class HttpService {
             connection.setUseCaches(false);
             connection.connect();
             statusCode = connection.getResponseCode();
+            if (statusCode == 301) {
+                return get(connection.getHeaderField("location"));
+            }
+            contentType = connection.getHeaderField("content-type");
             statusMessage = connection.getResponseMessage();
             reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             while ((line = reader.readLine()) != null) {
@@ -43,6 +48,6 @@ public class HttpService {
             }
         }
 
-        return new HttpResponse(statusCode, statusMessage, response.toString());
+        return new HttpResponse(statusCode, statusMessage, contentType, response.toString());
     }
 }

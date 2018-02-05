@@ -14,13 +14,15 @@ import java.util.stream.Collectors;
 public class JavaDomTest {
 
     public static void main(String[] args) throws Exception {
-        String url = "https://www.clevelandmetroparks.com/zoo";
+        String url = "http://www.advocatellp.com/";
         System.out.println(HttpService.get(url));
 //        JavaDom dom = new JavaDom();
-//        testSpeed(1000);
-        Document doc = JavaDom.getPage(url);
-        List<Node> res = doc.querySelector("a");
-        System.out.println("Found " + res.size() + " links");
+        testSpeed(10000);
+//        Document doc = JavaDom.getPage(url);
+//        System.out.println(doc.getRoot().toJSON());
+//        List<Node> res = doc.querySelector("a[href]");
+//        System.out.println("Found " + res.size() + " links");
+//        res.forEach(link -> System.out.println(link.absoluteUrl("href")));
     }
 
     public static void testSpeed(int iterations) throws Exception {

@@ -1,5 +1,6 @@
 package javadom.page;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,13 +14,15 @@ import java.util.regex.Pattern;
 public class Node {
 
     private static final Pattern bodyPattern =
-            Pattern.compile("(^[a-zA-Z]+)|(?:([a-zA-Z]+)\\s*=(?:\\s*['\"](.*?)['\"]))|(?:([a-zA-Z]+)=([^\\s]+))",
+            Pattern.compile("(^[\\w]+)|(?:([\\w]+)\\s*=(?:\\s*['\"](.*?)['\"]))|(?:([a-zA-Z]+)=([^\\s]+))",
                     Pattern.DOTALL);
 
     private static final String[] selfClosingTags = {
             "area", "base", "br", "col", "command", "embed", "hr", "img", "input", "keygen", "link", "menuitem",
             "meta", "param", "source", "track", "wbr"
     };
+
+    private String url;
 
     private Node parent;
     private List<Node> children;
@@ -30,7 +33,8 @@ public class Node {
     private Map<String, String> attributes;
     private String innerText;
 
-    public Node(String nodeBody) {
+    public Node(String url, String nodeBody) {
+        this.url = url;
         this.children = new ArrayList<>();
         this.attributes = new HashMap<>();
         this.parseBody(nodeBody);
@@ -60,13 +64,56 @@ public class Node {
         return this.attributes.get(name);
     }
 
-    public boolean isSelfClosing() {
+    protected boolean isSelfClosing() {
         for (String tagName : selfClosingTags) {
             if (tagName.equalsIgnoreCase(this.name)) {
                 return true;
             }
         }
         return false;
+    }
+
+    public String absoluteUrl(String attributeName) {
+        Pattern pattern;
+        Matcher baseMatcher;
+        Matcher attrMatcher;
+        String attrUrl;
+        StringBuilder absUrl;
+
+        pattern = Pattern.compile("(https?:\\/\\/)?(www\\.)?([^\\/#?]+)?(.*)");
+        baseMatcher = pattern.matcher(this.url);
+        attrUrl = this.getAttribute(attributeName);
+        if (attrUrl == null) {
+            return this.url;
+        }
+        attrMatcher = pattern.matcher(attrUrl);
+        if (!baseMatcher.find()) {
+            return this.url;
+        }
+        if (!attrMatcher.find()) {
+            return this.url;
+        }
+        absUrl = new StringBuilder();
+        if (attrMatcher.group(1) == null && baseMatcher.group(1) != null) {
+            absUrl.append(baseMatcher.group(1));
+        }
+        else {
+            absUrl.append(attrMatcher.group(1));
+        }
+        if (attrMatcher.group(2) == null && baseMatcher.group(2) != null) {
+            absUrl.append(baseMatcher.group(2));
+        }
+        else {
+            absUrl.append(attrMatcher.group(2));
+        }
+        if (attrMatcher.group(3) == null && baseMatcher.group(3) != null) {
+            absUrl.append(baseMatcher.group(3));
+        }
+        else {
+            absUrl.append(attrMatcher.group(3));
+        }
+        absUrl.append(attrMatcher.group(4));
+        return absUrl.toString();
     }
 
     private void parseBody(String body) {
